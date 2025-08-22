@@ -1,0 +1,180 @@
+# Project Rules and Methodology
+
+## Project Context (General)
+
+This repository will be used to build a new product. The rules below are stack-agnostic and focus on methodology, quality, and collaboration. Prefer asynchronous designs where appropriate, but do not assume a specific language or framework.
+
+## Code Standards
+
+- Prefer asynchronous/parallel execution where it improves user experience and performance
+- Use type annotations where supported by the language
+- Follow the community style guide for the chosen language and enforce formatting with a formatter/linter
+- Write comprehensive automated tests for every feature (unit, integration, and scenario tests)
+- Use value objects/data classes/DTOs for data models
+- Implement robust error handling with clear, actionable messages
+
+## Architecture Patterns
+
+- Repository pattern (data access contracts separated from implementations)
+- Service/Application layer for business logic orchestration
+- Workflow/Use-case layer for user interactions and long-running flows
+- Dependency injection for testability and composability
+- Cross-cutting concerns extracted (logging, tracing, auth, config)
+
+## Shared Code & Mixin Methodology
+
+### 1. Mixin-First Approach
+
+- Identify common functionality across modules early
+- Create mixins/traits/components for shared behavior before implementing specifics
+- Use composition over inheritance to reduce coupling and duplication
+
+### 2. Shared Service Patterns
+
+- Extract common service logic into base classes/utilities
+- Centralize validation and error handling
+- Build reusable adapters for external systems
+
+### 3. Interface Component Sharing
+
+- Create shared UI/interaction components (navigation, pagination, keyboards/menus, common prompts)
+- Reuse keyboard/menu/nav builders and state management across flows
+
+### 4. Service Layer Sharing
+
+- Identify common CRUD and query patterns
+- Implement reusable validation and authorization mixins
+- Provide shared logging and metrics helpers
+
+### 5. Data Access Sharing
+
+- Provide base repository interfaces and default implementations
+- Encapsulate transaction management and retry policies
+- Standardize model validation and mapping
+
+## Testing Requirements
+
+- Write scenario/integration tests for key user journeys
+- Use async-capable test runners where relevant
+- Mock or stub external dependencies (network, storage, queues)
+- Test error and edge conditions
+- Verify complete workflows end-to-end
+
+## Documentation
+
+- Document architectural decisions (ADRs)
+- Keep a clear changelog and meaningful commit messages
+- Maintain a comprehensive README and onboarding guides
+- Document public APIs and interfaces
+- Explain important business rules and workflow contracts
+
+## Development Workflow
+
+1. Write a concise feature description and acceptance criteria
+2. Identify shared code opportunities (mixins/components)
+3. Create/extend mixins for common functionality
+4. Write tests for the user scenario
+5. Implement the feature using the shared components
+6. Add integration/end-to-end tests
+7. Update documentation and examples
+
+## Mixin Implementation Guidelines
+
+### When to Use Mixins
+
+- Functionality is shared across multiple modules/classes
+- Common UI/interaction patterns (navigation, pagination, prompts)
+- Shared business rules (validation, authorization)
+- Common data access operations (CRUD, queries)
+- Workflow/state management patterns
+
+### Mixin Design Principles
+
+- Single, focused responsibility
+- Clear, descriptive method names
+- Comprehensive type hints where possible
+- Minimal assumptions about host class
+- Testable in isolation
+
+### Mixin Naming Conventions
+
+- Use descriptive names ending with "Mixin" (or language-idiomatic alternative)
+- Group related mixins in shared modules/packages
+- Use method names that clearly indicate intent
+
+### Testing Mixins
+
+- Test in isolation with mocks/fakes
+- Test in composition with representative host classes
+- Verify correct behavior when multiple mixins are combined
+- Cover error paths and edge cases
+
+## Shared Code Pattern Sketches (Language-Agnostic)
+
+### 1. NavigationMixin
+
+```pseudo
+trait NavigationMixin {
+  async handleBack(request, context): void
+  async showMainView(request, context): void
+}
+```
+
+### 2. ServiceValidationMixin
+
+```pseudo
+trait ServiceValidationMixin {
+  async ensureUserExists(userId): User
+  async ensureHasAccess(subjectId, resourceId, permission): void
+}
+```
+
+### 3. RepositoryCrudMixin
+
+```pseudo
+trait RepositoryCrudMixin<T> {
+  async create(entity: T): Id
+  async getById(id: Id): Optional<T>
+  async update(entity: T): void
+  async delete(id: Id): bool
+}
+```
+
+## Role-Based Repository Separation (Generic)
+
+Separate repositories (or data access methods) by roles/contexts to maintain clear boundaries and improve security:
+
+- Role A repositories (operators/internal tools)
+- Role B repositories (end users/customers)
+- Admin repositories (administrative/privileged operations)
+
+### Implementation Guidelines
+
+- Each role-specific repository extends or composes the base repository
+- Enforce role-based filtering and authorization at the repository boundary
+- Provide repositories via dependency injection based on context
+- Document role-specific methods and constraints
+- Maintain strict separation of concerns between roles
+
+### Security Principles
+
+- Never expose privileged methods to non-privileged contexts
+- Validate access at repository/service boundaries
+- Apply least-privilege defaults and audit sensitive operations
+
+### Documentation Structure
+
+- Create docs under `docs/repositories/`:
+  - `role_a_repositories.md`
+  - `role_b_repositories.md`
+  - `admin_repositories.md`
+  - `repository_access_control.md`
+
+## Success Criteria for Shared Code
+
+- Reduce code duplication by at least 30%
+- Improve test coverage via shared test patterns
+- Speed up feature development through reusable components
+- Ensure consistent behavior across similar features
+- Simplify maintenance and bug fixes
+- Keep patterns and usage well documented
