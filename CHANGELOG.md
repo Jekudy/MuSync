@@ -21,6 +21,20 @@
 ### Исправлено
 - Настройка .gitignore для исключения токенов
 
+## v0.1.0 - Initial CLI MVP
+
+- Providers: Yandex (read) and Spotify (search/playlist/add batch)
+- Application: Matching (ISRC→exact→fuzzy), batching, retries/backoff, checkpointing, dry-run
+- Interfaces: CLI (transfer/list) and minimal HTTP (health, OAuth callback)
+- Cross-cutting: structured logging, metrics, reporting
+- Idempotency: snapshotHash, per-batch checkpoints
+- Testing: unit, contract, integration, E2E; gating with timeouts; coverage ~92%
+- Artifacts policy: reports/, checkpoints/, metrics/, logs/; tokens outside repo
+
+Notes:
+- E2E acceptance dataset and simple E2E are green; legacy E2E suite partially adapted to new pipeline API.
+- Use scripts/prepare_release.py to build release artifacts and manifest.
+
 ## [0.1.0] - 2024-01-XX
 
 ### Добавлено

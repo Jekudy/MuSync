@@ -1,0 +1,19 @@
+playlist_id,playlist_name,is_owned,track_id,track_title,artists,album,duration_ms,isrc,expected_spotify_uri,expected_confidence,notes
+12345,Мой рок,true,1001,Bohemian Rhapsody,Queen,A Night at the Opera,354000,GBUM71029601,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,1.0,Классический рок - точный матч по ISRC
+12345,Мой рок,true,1002,Stairway to Heaven,Led Zeppelin,Led Zeppelin IV,482000,GBKPL0500001,spotify:track:5CQ30WqJwcep0pYcV4AMNc,1.0,Классический рок - точный матч по ISRC
+12346,Поп хиты,true,1003,Shape of You,Ed Sheeran,÷ (Divide),233000,GBUM71700601,spotify:track:7qiZfU4dY1lWllzX7mPBI3,1.0,Современный поп - точный матч по ISRC
+12346,Поп хиты,true,1004,Blinding Lights,The Weeknd,After Hours,200000,USRC12000001,spotify:track:0VjIjW4GlUZAMYd2vXMi3b,1.0,Современный поп - точный матч по ISRC
+12347,Электроника,true,1005,Sandstorm,Darude,Sandstorm,224000,FIEM03000001,spotify:track:6Sy9BUbgFse0n0LPA5lwy5,1.0,Электроника - точный матч по ISRC
+12347,Электроника,true,1006,Levels,Avicii,True,285000,SEUM71300001,spotify:track:5UqCQaDshqbIk3pkhy4Pjg,1.0,Электроника - точный матч по ISRC
+12348,Русский рок,true,1007,Группа крови,Кино,Группа крови,286000,,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,0.95,Русский рок - exact match по title+artist+duration
+12348,Русский рок,true,1008,Спокойная ночь,Кино,Группа крови,245000,,spotify:track:5CQ30WqJwcep0pYcV4AMNc,0.95,Русский рок - exact match по title+artist+duration
+12349,Сложные названия,true,1009,Bohemian Rhapsody (Remastered 2011),Queen,A Night at the Opera (Remastered),354000,GBUM71029601,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,0.98,Ремастер - exact match с толерансом к скобкам
+12349,Сложные названия,true,1010,Stairway to Heaven - 1990 Remaster,Led Zeppelin,Led Zeppelin IV (Deluxe Edition),482000,GBKPL0500001,spotify:track:5CQ30WqJwcep0pYcV4AMNc,0.98,Ремастер - exact match с толерансом к дефисам
+12350,Fuzzy тесты,true,1011,Bohemian Rhapsody,Queen & Freddie Mercury,A Night at the Opera,354000,,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,0.92,Fuzzy - нормализация "&" в "and"
+12350,Fuzzy тесты,true,1012,Shape of You (feat. Ed Sheeran),Ed Sheeran,÷ (Divide),233000,,spotify:track:7qiZfU4dY1lWllzX7mPBI3,0.90,Fuzzy - удаление "(feat. ...)"
+12351,Edge cases,true,1013,Bohemian Rhapsody,Queen,A Night at the Opera,355000,,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,0.85,Fuzzy - длительность ±1с на границе толеранса
+12351,Edge cases,true,1014,Bohemian Rhapsody,Queen,A Night at the Opera,352000,,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,0.85,Fuzzy - длительность ±2с на границе толеранса
+12352,Not found,true,1015,Неизвестный трек,Неизвестный артист,Неизвестный альбом,180000,,,0.0,Ожидаемый not_found - трек отсутствует в Spotify
+12352,Not found,true,1016,Ещё один неизвестный,Другой артист,Другой альбом,200000,,,0.0,Ожидаемый not_found - трек отсутствует в Spotify
+12353,Подписной плейлист,false,1017,Bohemian Rhapsody,Queen,A Night at the Opera,354000,GBUM71029601,spotify:track:3z8h0TU7ReDPLIbEnYhWZb,1.0,Подписной плейлист - должен быть включен в перенос
+12353,Подписной плейлист,false,1018,Stairway to Heaven,Led Zeppelin,Led Zeppelin IV,482000,GBKPL0500001,spotify:track:5CQ30WqJwcep0pYcV4AMNc,1.0,Подписной плейлист - должен быть включен в перенос

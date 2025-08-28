@@ -1,282 +1,266 @@
-# 🚀 Cursor Development Guide: From Beginner to Pro
+# [DEPRECATED] CURSOR DEVELOPMENT GUIDE — MuSync
 
-## 📋 Table of Contents
+> This guide is deprecated. For all new development, you MUST read and follow `PROJECT_RULES.md` first (9-step methodology). This document remains as background/reference and may be partially outdated.
 
-1. [Philosophy & Approach](#philosophy--approach)
-2. [Cursor Setup](#cursor-setup)
-3. [Development Methodology](#development-methodology)
-4. [Prompting Strategies](#prompting-strategies)
-5. [Project Structure](#project-structure)
-6. [Testing Strategy](#testing-strategy)
-7. [Step-by-Step Workflow](#step-by-step-workflow)
+## 🎯 Цель
+Этот документ содержит инструкции для агента Cursor по разработке сервиса MuSync в соответствии с архитектурой, PRD и методологией проекта.
+
+## 📋 Обязательные документы для изучения перед началом работы
+
+**Перед любым изменением кода обязательно изучите:**
+
+1. **`docs/PRD.md`** — требования, итерации, DoR/DoD, KPI/SLI/SLO
+2. **`ARCHITECTURE.md`** — слои, порты, принципы, политики
+3. **`BACKLOG.md`** — текущие задачи итерации 1, зависимости, критерии
+4. **`TEST_PLAN.md`** — стратегия тестирования, acceptance критерии
+5. **`docs/adr/*`** — ключевые архитектурные решения
+
+## 🏗️ Архитектурные принципы (НЕ НАРУШАТЬ)
+
+### Слои и зависимости (Hexagonal Architecture)
+```
+Interfaces (CLI/HTTP) → Application (use cases) → Domain (entities/rules) ← Infrastructure (adapters)
+```
+
+- **Domain** — чистый код, никаких фреймворков/I/O
+- **Application** — оркестрация, батчинг, ретраи, дедлайны
+- **Infrastructure** — адаптеры провайдеров, хранилища, секреты
+- **Interfaces** — CLI команды, HTTP endpoints
+
+### Общие архитектурные паттерны
+- **Repository pattern** — разделение доступа к данным от реализации
+- **Service/Application layer** — оркестрация бизнес-логики
+- **Dependency injection** — для тестируемости и композиции
+- **Cross-cutting concerns** — логирование, трассировка, аутентификация, конфигурация
+
+### Shared Code & Mixin методология
+- **Mixin-First Approach** — выявляйте общую функциональность рано
+- **Composition over inheritance** — используйте композицию для снижения связанности
+- **Shared Service Patterns** — извлекайте общую логику сервисов в базовые классы
+- **Interface Component Sharing** — переиспользуйте компоненты интерфейсов
+- **Data Access Sharing** — предоставляйте базовые интерфейсы репозиториев
+
+### Порты и адаптеры
+- Все внешние зависимости через порты (интерфейсы)
+- Адаптеры реализуют порты, но не влияют на домен
+- Контрактные тесты для всех адаптеров обязательны
+
+### Идемпотентность
+- Ключ: `(userId, source, target, snapshotHash)`
+- Чекпойнты на уровне батча
+- Повторный запуск не создаёт дублей
+
+## 🧪 Методология разработки (TDD)
+
+### 1. Начинайте с тестов
+**Перед написанием любого кода:**
+- Изучите `TEST_PLAN.md` и соответствующие схемы в `docs/`
+- Напишите юнит-тесты для доменной логики
+- Напишите контрактные тесты для адаптеров
+- Используйте `docs/acceptance_sample.csv` для e2e
+
+### 2. Testing Requirements (общие)
+- **Scenario/integration tests** для ключевых пользовательских сценариев
+- **Async-capable test runners** где релевантно
+- **Mock/stub external dependencies** (сеть, хранилище, очереди)
+- **Test error and edge conditions** — не только happy path
+- **Verify complete workflows end-to-end**
+- **Test mixins in isolation** и в композиции
+
+### 2. Порядок разработки по задачам
+Следуйте `BACKLOG.md` строго по порядку зависимостей:
+
+1. **Задача 1.1** — Порт `MusicProvider` и доменные сущности
+2. **Задача 1.2** — Идемпотентность и чекпойнты
+3. **Задача 1.3** — Схемы отчётов и метрик
+4. **Задача 2.1** — Яндекс адаптер
+5. **Задача 2.2** — Spotify адаптер
+6. **Задача 3.1** — Матчинг
+7. **Задача 3.2** — Батчинг и ретраи
+8. **Задача 3.3** — Dry-run режим
+9. **Задача 4.1** — CLI интерфейс
+10. **Задача 4.2** — HTTP интерфейс
+11. **Задача 5.1-5.3** — Наблюдаемость и безопасность
+12. **Задача 6.1-6.3** — Тестирование и gating
+13. **Задача 7.1-7.2** — Выпуск и откат
+
+### 3. Критерии качества кода
+- **Покрытие тестами** ≥ 80% для критичных модулей
+- **Контрактные тесты** зелёные для всех адаптеров
+- **E2E тесты** проходят с порогами из PRD
+- **Линтинг** без ошибок (black, flake8, mypy)
+- **Документация** обновлена
+
+## 🔧 Технические требования
+
+### Структура проекта
+```
+app/
+├── domain/           # Сущности, порты, правила
+├── application/      # Use cases, оркестрация
+├── infrastructure/   # Адаптеры провайдеров, хранилища
+├── interfaces/       # CLI, HTTP
+├── crosscutting/     # Логирование, конфиг, метрики
+└── tests/           # Юнит, контракты, e2e
+```
+
+### Конфигурация и секреты
+- Используйте `env.example` как шаблон
+- Секреты в `~/.config/musync/tokens.json` (вне репозитория)
+- Артефакты в `~/.local/share/musync/` (Linux), `~/Library/Application Support/MuSync/` (macOS)
+- Переопределение через ENV переменные
+
+### Таймауты и завершение
+- Короткие CLI команды: таймаут 90с по умолчанию
+- Долгоживущие сервисы: без таймаута
+- Все команды завершаются корректным exit code
+- Нет зависаний > 1 минуты
+
+## 📊 Схемы и форматы
+
+### Отчёты
+- Используйте `docs/report_schema.json` для структуры отчётов
+- Именование: `<jobId>__<snapshotHash>__<yyyyMMdd-HHmmss>.json`
+- Сохранение в `reports/` директории
+
+### Метрики
+- Используйте `docs/metrics_schema.json` для структуры метрик
+- JSON-lines формат для потоковой обработки
+- Сохранение в `metrics/` директории
+
+### Чекпойнты
+- Используйте `docs/checkpoint_schema.json` для структуры
+- Именование: `<jobId>__<playlistId>__batch-<n>.json`
+- Сохранение в `checkpoints/` директории
+
+### Токены
+- Используйте `docs/tokens_template.json` для структуры
+- Файл вне репозитория, права 600
+- Автоматическое создание через OAuth flow
+
+## 🎯 Acceptance критерии
+
+### Матчинг
+- **Match rate** ≥ 90% на `docs/acceptance_sample.csv`
+- **False match** ≤ 2%
+- **Explainability** — причины not_found в отчёте
+
+### Производительность
+- **TTS** ≤ 5 минут на 10k треков
+- **Идемпотентность** — 0 дублей при повторном запуске
+- **RL handling** — уважение retry-after, backoff
+
+### Надёжность
+- **Покрытие тестами** ≥ 80% критичных модулей
+- **E2E тесты** зелёные
+- **Структурированные логи** без секретов
+- **Корреляция** по jobId
+
+## 🚫 Что НЕ делать
+
+### Архитектурные нарушения
+- ❌ Не добавляйте зависимости в domain слой
+- ❌ Не делайте прямые вызовы API в application слое
+- ❌ Не нарушайте принцип инверсии зависимостей
+- ❌ Не хардкодите конфигурацию
+
+### Тестирование
+- ❌ Не пропускайте контрактные тесты
+- ❌ Не игнорируйте acceptance критерии
+- ❌ Не делайте тесты без assert'ов
+- ❌ Не тестируйте только happy path
+
+### Безопасность
+- ❌ Не логируйте секреты и токены
+- ❌ Не коммитьте файлы с секретами
+- ❌ Не используйте широкие scopes OAuth
+- ❌ Не игнорируйте маскирование в логах
+
+## ✅ Чеклист перед коммитом
+
+### Код
+- [ ] Следует архитектуре из `ARCHITECTURE.md`
+- [ ] Реализует требования из `BACKLOG.md`
+- [ ] Покрыт тестами согласно `TEST_PLAN.md`
+- [ ] Проходит линтинг (black, flake8, mypy)
+- [ ] Нет хардкода конфигурации
+
+### Тесты
+- [ ] Юнит-тесты зелёные
+- [ ] Контрактные тесты зелёные
+- [ ] E2E тесты проходят acceptance критерии
+- [ ] Покрытие ≥ 80% критичных модулей
+
+### Документация
+- [ ] Обновлены схемы в `docs/` если изменены контракты
+- [ ] Обновлен `BACKLOG.md` если задача завершена
+- [ ] Добавлены ADR если приняты новые решения
+
+### Безопасность
+- [ ] Секреты не в коде
+- [ ] Логи без токенов
+- [ ] Минимальные scopes OAuth
+
+## 🔄 Workflow разработки
+
+### 1. Начало работы над задачей
+```bash
+# Изучить задачу в BACKLOG.md
+# Проверить зависимости
+# Создать ветку: feature/task-1.1-music-provider-port
+```
+
+### 2. Разработка по TDD
+```bash
+# 1. Написать тесты (красные)
+pytest tests/ -v
+
+# 2. Реализовать минимальный код (зелёные)
+# 3. Рефакторинг
+# 4. Повторить цикл
+```
+
+### 3. Проверка качества
+```bash
+# Линтинг
+black app/ tests/
+flake8 app/ tests/
+mypy app/
+
+# Тесты
+pytest --cov=app --cov-report=html
+pytest tests/e2e/ -v
+
+# Acceptance
+python -m app.interfaces.cli.main transfer ya2sp --dry-run
+```
+
+### 4. Завершение задачи
+```bash
+# Обновить BACKLOG.md (отметить как completed)
+# Обновить документацию если нужно
+# Создать PR с описанием изменений
+```
+
+## 📚 Ссылки на ключевые документы
+
+- **Требования**: `docs/PRD.md`
+- **Архитектура**: `ARCHITECTURE.md`
+- **Задачи**: `BACKLOG.md`
+- **Тестирование**: `TEST_PLAN.md`
+- **Решения**: `docs/adr/*`
+- **Схемы**: `docs/*_schema.json`
+- **Тестовые данные**: `docs/acceptance_sample.csv`
+- **OAuth**: `docs/SPOTIFY_REDIRECT_URI_GUIDE.md`
+
+## 🆘 Если что-то непонятно
+
+1. **Изучите ADR** в `docs/adr/` — там объяснены ключевые решения
+2. **Проверьте схемы** в `docs/` — там структуры данных
+3. **Посмотрите acceptance CSV** — там примеры тестовых данных
+4. **Следуйте BACKLOG.md** — там порядок и зависимости задач
+5. **Не нарушайте архитектуру** — это основа всего проекта
 
 ---
 
-## 🎯 Philosophy & Approach
-
-### Core Principles
-
-1. Test-Driven Development (write tests first)
-2. Prefer async/parallel designs where it improves UX/perf
-3. Document decisions and public interfaces
-4. Incremental development with working tests
-5. Production-readiness: reliability, observability, security
-
-### Development Mindset
-
-- Think in user scenarios and acceptance criteria
-- Fail fast via tests and feature flags
-- Keep a living architecture (ADRs)
-- Iterate in small, safe steps
-
----
-
-## ⚙️ Cursor Setup
-
-### Step 1: Install Cursor
-
-Download from `https://cursor.sh` and install
-
-### Step 2: Configure Your Environment
-
-Create a `.cursorrules` file with stack-agnostic rules. Example:
-
-```markdown
-# Project Rules
-
-## Code Standards
-- Use type hints and a formatter/linter
-- Prefer async where helpful
-- Write tests for new features
-
-## Architecture
-- Repositories for data access
-- Services/use-cases for business logic
-- Mixins/components for shared behavior
-
-## Workflow
-1) Feature description → 2) Tests → 3) Implementation → 4) Integration tests → 5) Docs
-```
-
-### Step 3: Editor/Tooling Extensions (example)
-
-```json
-{
-  "extensions": [
-    "editorconfig.editorconfig",
-    "streetsidesoftware.code-spell-checker"
-  ]
-}
-```
-
----
-
-## 🏗️ Development Methodology
-
-### 1. Feature-Driven Development with Shared Code
-
-```
-Feature request → Identify shared code → Create/extend mixins → Scenario → Tests → Implementation → Integration tests → Docs
-```
-
-### 2. Mixin-First Approach
-
-- Identify common patterns before coding specifics
-- Extract shared behavior into reusable mixins/components
-- Test mixins in isolation and in composition
-
-### 3. Test-First Approach (pseudo)
-
-```pseudo
-test "user can register" {
-  service = createUserService(fakeRepo)
-  user = service.register("john")
-  expect(user.name == "john")
-}
-```
-
-### 4. Async-First Sketch (pseudo)
-
-```pseudo
-async registerUser(name) -> User {
-  ensure(!(await repo.exists(name)))
-  id = await repo.create(User(name))
-  return User(id, name)
-}
-```
-
----
-
-## 💬 Prompting Strategies
-
-### 1. Context-Rich Prompts
-
-```
-I'm building a new product with a repository/service architecture.
-I need to implement: [feature]
-
-Relevant structure:
-[describe modules]
-
-Please help me:
-1) Write a scenario test
-2) Implement the feature
-3) Add integration tests
-4) Update docs
-```
-
-### 2. Scenario-Based Prompts
-
-```
-Implement a confirmation workflow where:
-1) User submits a request
-2) Approver is notified
-3) Approver confirms or rejects
-4) Requester sees the decision
-
-Please guide step by step, starting with tests.
-```
-
-### 3. Debugging Prompts
-
-```
-I'm getting this error:
-[error]
-
-Test code:
-[snippet]
-
-Service code:
-[snippet]
-
-Please help identify and fix the issue.
-```
-
----
-
-## 📁 Project Structure (Generic)
-
-```
-project/
-├── app/
-│   ├── domain/            # Entities, value objects, rules
-│   ├── application/       # Use cases/services
-│   ├── infrastructure/    # Repos, integrations
-│   └── interfaces/        # API/UI/Bot/CLI
-├── tests/                 # Unit/integration/e2e
-├── docs/                  # Docs and ADRs
-└── config/                # Env/config
-```
-
----
-
-## 🧪 Testing Strategy
-
-### 1. Test Categories (pseudo)
-
-```pseudo
-test unit "service registers user" { ... }
-test integration "workflow succeeds with db" { ... }
-test e2e "user completes scenario" { ... }
-```
-
-### 2. Test Configuration
-
-- Use an async-capable test runner where relevant
-- Provide fakes/mocks for external dependencies
-- Run tests in CI with clear reports
-
----
-
-## 🔄 Step-by-Step Workflow
-
-### Phase 1: Plan with Shared Code Analysis
-
-1. Write a one-page feature description (problem, scope, acceptance criteria)
-2. Identify shared patterns (navigation, CRUD, validation, state)
-3. Design/extend mixins/components
-4. Draft scenario tests
-
-### Phase 2: Core Implementation
-
-1. Implement domain entities and validations
-2. Implement use cases/services using repositories
-3. Add observability and error handling
-
-### Phase 3: Integration & E2E
-
-1. Write integration tests with real adapters where safe
-2. Add end-to-end tests for critical paths
-3. Update docs and examples
-
----
-
-## 🎯 Common Patterns & Best Practices
-
-### 1. Mixin Pattern (pseudo)
-
-```pseudo
-trait NavigationMixin { async handleBack(req, ctx) }
-```
-
-### 2. Repository Pattern (pseudo)
-
-```pseudo
-port Repository<T> { create(T): Id; getById(Id): T? }
-```
-
-### 3. Error Handling (pseudo)
-
-```pseudo
-error DomainError; error ValidationError extends DomainError
-```
-
-### 4. Workflow Composition
-
-- Compose small, testable steps
-- Keep side effects at boundaries
-
----
-
-## 🚀 Getting Started Checklist
-
-### Day 1: Setup
-
-- [ ] Install Cursor
-- [ ] Create `.cursorrules`
-- [ ] Configure formatter/linter and tests
-- [ ] Run initial CI
-
-### Day 2: First Feature with Shared Code
-
-- [ ] Feature description
-- [ ] Identify shared code
-- [ ] Write scenario test
-- [ ] Implement with mixins/components
-- [ ] Integration tests
-- [ ] Update docs
-
-### Day 3: Advanced Patterns
-
-- [ ] Repository CRUD mixins
-- [ ] Validation/authorization mixins
-- [ ] Observability and error taxonomy
-- [ ] E2E tests for critical flows
-- [ ] Architecture ADRs
-
----
-
-## 📚 Resources & References
-
-- Team style guide and ADRs in `docs/`
-- Testing framework and runner docs (stack-specific)
-- Observability and security best practices
-
-### Success Metrics
-
-- [ ] All tests passing in CI
-- [ ] No lint/type errors
-- [ ] Docs up to date
-- [ ] Error handling and logging in place
-
-Remember: pair solid prompting with disciplined engineering. Write tests first, prefer async where helpful, identify shared code early, compose with mixins, and document as you go.
+**Помните**: Каждый коммит должен приближать к цели — надёжному переносу плейлистов с высоким качеством матчинга и полной отчётностью.

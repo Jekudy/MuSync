@@ -59,3 +59,23 @@ yandex_tokens.json
 # Temporary files
 *.tmp
 *.temp
+
+# Coverage and test caches
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Local caches and PIDs
+.cache
+*.pid
+
+# Runtime and generated artifacts
+logs/
+artifacts/
+reports/
+checkpoints/
+
+# Spotify dev cache files
+.spotify_token_cache
+.spotify_code

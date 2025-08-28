@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MuSync Metrics Schema",
+  "description": "Схема метрик для отслеживания производительности и качества переноса",
+  "type": "object",
+  "required": ["jobId", "timestamp", "metrics"],
+  "properties": {
+    "jobId": {
+      "type": "string",
+      "description": "Идентификатор задачи переноса"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время записи метрик"
+    },
+    "snapshotHash": {
+      "type": "string",
+      "description": "Хеш снапшота для корреляции"
+    },
+    "metrics": {
+      "type": "object",
+      "required": ["match_rate", "write_success_rate", "retry_count", "rl_wait_ms", "duration_ms"],
+      "properties": {
+        "match_rate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Процент успешных матчей треков"
+        },
+        "write_success_rate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Процент успешных записей в целевой сервис"
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее количество ретраев API вызовов"
+        },
+        "rl_wait_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее время ожидания из-за rate limiting (мс)"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее время выполнения задачи (мс)"
+        },
+        "not_found_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество ненайденных треков"
+        },
+        "duplicate_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество дубликатов при записи"
+        },
+        "error_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество ошибок API"
+        },
+        "batch_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество обработанных батчей"
+        },
+        "playlist_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество обработанных плейлистов"
+        }
+      }
+    },
+    "batch_metrics": {
+      "type": "array",
+      "description": "Метрики по батчам для детального анализа",
+      "items": {
+        "type": "object",
+        "required": ["batch_index", "playlist_id", "tracks_count", "duration_ms", "retry_count"],
+        "properties": {
+          "batch_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Индекс батча"
+          },
+          "playlist_id": {
+            "type": "string",
+            "description": "ID плейлиста"
+          },
+          "tracks_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Количество треков в батче"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Время обработки батча (мс)"
+          },
+          "retry_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Количество ретраев для батча"
+          },
+          "rl_wait_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Время ожидания RL для батча (мс)"
+          },
+          "success_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Количество успешно добавленных треков"
+          },
+          "error_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Количество ошибок в батче"
+          }
+        }
+      }
+    },
+    "provider_metrics": {
+      "type": "object",
+      "description": "Метрики по провайдерам",
+      "properties": {
+        "yandex": {
+          "type": "object",
+          "properties": {
+            "api_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество API вызовов к Яндекс.Музыка"
+            },
+            "errors": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество ошибок API"
+            },
+            "rate_limited": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество случаев rate limiting"
+            }
+          }
+        },
+        "spotify": {
+          "type": "object",
+          "properties": {
+            "api_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество API вызовов к Spotify"
+            },
+            "errors": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество ошибок API"
+            },
+            "rate_limited": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество случаев rate limiting"
+            },
+            "search_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество вызовов поиска"
+            },
+            "add_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Количество вызовов добавления треков"
+            }
+          }
+        }
+      }
+    }
+  }
+}

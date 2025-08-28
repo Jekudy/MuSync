@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MuSync Checkpoint Schema",
+  "description": "Схема чекпойнтов для восстановления состояния переноса",
+  "type": "object",
+  "required": ["jobId", "playlistId", "batchIndex", "stage", "updatedAt"],
+  "properties": {
+    "jobId": {
+      "type": "string",
+      "description": "Идентификатор задачи переноса"
+    },
+    "snapshotHash": {
+      "type": "string",
+      "description": "Хеш снапшота для идемпотентности"
+    },
+    "playlistId": {
+      "type": "string",
+      "description": "ID плейлиста в источнике"
+    },
+    "batchIndex": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Индекс текущего батча"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["scanning", "matching", "writing", "completed", "failed"],
+      "description": "Текущий этап обработки"
+    },
+    "cursor": {
+      "type": "object",
+      "description": "Позиция в обработке",
+      "properties": {
+        "trackIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Индекс трека в плейлисте"
+        },
+        "batchTrackIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Индекс трека в текущем батче"
+        }
+      }
+    },
+    "addedUris": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Список уже добавленных URI треков"
+    },
+    "attempts": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Количество попыток для текущего батча"
+    },
+    "lastError": {
+      "type": "object",
+      "description": "Информация о последней ошибке",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Сообщение об ошибке"
+        },
+        "code": {
+          "type": "string",
+          "description": "Код ошибки"
+        },
+        "retryAfter": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Время ожидания до следующей попытки (мс)"
+        }
+      }
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время последнего обновления чекпойнта"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Дополнительные метаданные",
+      "properties": {
+        "totalTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее количество треков в плейлисте"
+        },
+        "processedTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество обработанных треков"
+        },
+        "batchSize": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Размер батча"
+        }
+      }
+    }
+  }
+}

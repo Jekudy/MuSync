@@ -25,7 +25,8 @@ from typing import List
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run a command with a timeout")
+    parser = argparse.ArgumentParser(
+        description="Run a command with a timeout")
     parser.add_argument(
         "--timeout",
         type=int,
@@ -56,7 +57,9 @@ def terminate_process_tree(proc: subprocess.Popen, grace: float) -> None:
     """Try to gracefully stop the process, then kill it."""
     try:
         if os.name == "nt":
-            # Windows: send CTRL_BREAK (if in new process group), then terminate
+            # Windows: send CTRL_BREAK (if in new process group), then
+            # terminate
+            # type: ignore[attr-defined]
             proc.send_signal(signal.CTRL_BREAK_EVENT)  # type: ignore[attr-defined]
         else:
             # POSIX: send SIGINT to the whole group
@@ -90,6 +93,7 @@ def main() -> int:
         # Start a new process group so we can kill the whole tree
         preexec_fn = os.setsid  # type: ignore[assignment]
     else:
+        # type: ignore[attr-defined]
         creationflags = subprocess.CREATE_NEW_PROCESS_GROUP  # type: ignore[attr-defined]
 
     try:
@@ -106,7 +110,8 @@ def main() -> int:
         returncode = proc.wait(timeout=args.timeout)
         return returncode
     except subprocess.TimeoutExpired:
-        print(f"⏳ Timeout {args.timeout}s reached. Stopping command: {' '.join(cmd)}")
+        print(f"⏳ Timeout {args.timeout}s reached. "
+              f"Stopping command: {' '.join(cmd)}")
         terminate_process_tree(proc, args.grace)
         # Give a brief moment for cleanup
         time.sleep(0.2)
@@ -115,5 +120,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
-

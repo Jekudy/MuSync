@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-08-25T23:01:25.909303",
+  "playlist_name": "manual transfer",
+  "total_tracks": 235,
+  "matched_tracks": 0,
+  "not_found_tracks": 235,
+  "insufficient_metadata_tracks": 0,
+  "timeout_tracks": 0,
+  "match_rate_percent": 0.0,
+  "total_time_seconds": 37.412516,
+  "tracks_per_second": 6.281320400905408
+}

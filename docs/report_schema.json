@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MuSync Transfer Report Schema",
+  "description": "Схема отчёта о переносе плейлистов между музыкальными сервисами",
+  "type": "object",
+  "required": ["header", "summary", "playlists"],
+  "properties": {
+    "header": {
+      "type": "object",
+      "required": ["jobId", "startedAt", "finishedAt", "source", "target", "snapshotHash", "dryRun"],
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "Уникальный идентификатор задачи переноса"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Время начала переноса в ISO 8601"
+        },
+        "finishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Время завершения переноса в ISO 8601"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["yandex"],
+          "description": "Источник плейлистов"
+        },
+        "target": {
+          "type": "string",
+          "enum": ["spotify"],
+          "description": "Целевой сервис"
+        },
+        "snapshotHash": {
+          "type": "string",
+          "description": "SHA256 хеш снапшота треков для идемпотентности"
+        },
+        "dryRun": {
+          "type": "boolean",
+          "description": "Флаг режима тестирования без записи"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["totalPlaylists", "totalTracks", "matchedTracks", "addedTracks", "duplicateTracks", "errorTracks", "notFoundTracks", "matchRate", "writeSuccessRate"],
+      "properties": {
+        "totalPlaylists": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее количество обработанных плейлистов"
+        },
+        "totalTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Общее количество треков"
+        },
+        "matchedTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество найденных соответствий"
+        },
+        "addedTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество добавленных треков (без дублей)"
+        },
+        "duplicateTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество дубликатов (уже существующих)"
+        },
+        "errorTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество треков с ошибками"
+        },
+        "notFoundTracks": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Количество ненайденных треков"
+        },
+        "matchRate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Процент успешных матчей (matchedTracks / totalTracks)"
+        },
+        "writeSuccessRate": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Процент успешных записей (addedTracks / matchedTracks)"
+        }
+      }
+    },
+    "playlists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["playlistId", "name", "isOwned", "totals", "tracks"],
+        "properties": {
+          "playlistId": {
+            "type": "string",
+            "description": "ID плейлиста в источнике"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название плейлиста"
+          },
+          "isOwned": {
+            "type": "boolean",
+            "description": "Флаг собственного плейлиста"
+          },
+          "targetPlaylistId": {
+            "type": "string",
+            "description": "ID плейлиста в целевом сервисе (если создан/найден)"
+          },
+          "totals": {
+            "type": "object",
+            "required": ["tracks", "matched", "added", "duplicates", "errors"],
+            "properties": {
+              "tracks": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "matched": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "added": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "duplicates": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "errors": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "tracks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["sourceTrackId", "status", "confidence"],
+              "properties": {
+                "sourceTrackId": {
+                  "type": "string",
+                  "description": "ID трека в источнике"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Название трека"
+                },
+                "artists": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["matched", "added", "skipped_duplicate", "not_found", "ambiguous", "error", "rl_deferred", "skipped_dry_run"],
+                  "description": "Статус обработки трека"
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0,
+                  "description": "Уверенность в матче (0.0 = не найден, 1.0 = точный матч)"
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Причина статуса (для not_found, error, ambiguous)"
+                },
+                "targetUri": {
+                  "type": "string",
+                  "description": "URI трека в целевом сервисе (если найден)"
+                },
+                "candidates": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "required": ["uri", "confidence"],
+                    "properties": {
+                      "uri": {"type": "string"},
+                      "confidence": {
+                        "type": "number",
+                        "minimum": 0.0,
+                        "maximum": 1.0
+                      }
+                    }
+                  },
+                  "description": "Top-3 кандидата для explainability"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

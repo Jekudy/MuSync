@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MuSync Tokens Template",
+  "description": "Шаблон файла токенов для хранения OAuth секретов вне репозитория",
+  "type": "object",
+  "required": ["version", "created_at"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Версия схемы токенов"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время создания файла токенов"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время последнего обновления токенов"
+    },
+    "spotify": {
+      "type": "object",
+      "description": "OAuth токены Spotify",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "Access token для API Spotify"
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "Refresh token для обновления access token"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Время истечения access token"
+        },
+        "token_type": {
+          "type": "string",
+          "default": "Bearer",
+          "description": "Тип токена"
+        },
+        "scope": {
+          "type": "string",
+          "description": "Список разрешений (scopes) токена"
+        }
+      }
+    },
+    "yandex": {
+      "type": "object",
+      "description": "OAuth токен Яндекс.Музыка",
+      "properties": {
+        "oauth_token": {
+          "type": "string",
+          "description": "OAuth токен для API Яндекс.Музыка"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Время истечения токена (если применимо)"
+        }
+      }
+    }
+  }
+}

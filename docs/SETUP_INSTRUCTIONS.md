@@ -61,7 +61,30 @@
 
 ---
 
-## 2. Получение токена Яндекс.Музыки
+## 2. OAuth авторизация Spotify с корректными scopes
+
+Для миграции лайков необходимы права на библиотеку пользователя: `user-library-read user-library-modify`.
+
+Вариант A. Локальный OAuth helper (рекомендуется):
+
+```bash
+python3 spotify_oauth_server.py
+# Откроется URL авторизации с нужными scopes:
+# user-library-read user-library-modify playlist-read-private playlist-modify-private playlist-modify-public
+```
+
+Вариант B. HTTP интерфейс (если поднимаете web-сервис):
+
+```bash
+# Получить auth_url через HTTP endpoint сервиса (в ответе будут нужные scopes)
+curl http://localhost:3000/auth/spotify
+```
+
+После авторизации убедитесь, что сохранённые токены содержат перечисленные scopes. При изменении scopes требуется переавторизация.
+
+---
+
+## 3. Получение токена Яндекс.Музыки
 
 ### Метод 1: Через OAuth авторизацию (рекомендуемый)
 
@@ -106,7 +129,7 @@
 
 ---
 
-## 3. Управление токенами пользователей
+## 4. Управление токенами пользователей
 
 Проект включает систему управления токенами для поддержки нескольких пользователей:
 
@@ -141,7 +164,7 @@ env_content = tokens_manager.export_to_env_format("user_name")
 - `YANDEX_MUSIC_TOKEN` - основной токен для текущего пользователя
 - `USER_<USERNAME>_<SERVICE>_TOKEN` - токены для конкретных пользователей
 
-## 4. Проверка полученных ключей
+## 5. Проверка полученных ключей
 
 ### Тест Spotify API
 
@@ -161,7 +184,7 @@ try:
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri=REDIRECT_URI,
-        scope="user-library-read playlist-read-private"
+        scope="user-library-read user-library-modify playlist-read-private playlist-modify-private playlist-modify-public"
     ))
     
     # Тест подключения
@@ -199,7 +222,7 @@ except Exception as e:
 
 ---
 
-## 4. Создание файла .env
+## 6. Создание файла .env
 
 Создайте файл `.env` в корне проекта:
 
@@ -219,7 +242,7 @@ SYNC_BATCH_SIZE=50
 
 ---
 
-## 5. Безопасность и рекомендации
+## 7. Безопасность и рекомендации
 
 ### ✅ Что делать:
 
@@ -242,7 +265,7 @@ SYNC_BATCH_SIZE=50
 
 ---
 
-## 6. Устранение неполадок
+## 8. Устранение неполадок
 
 ### Spotify API не работает:
 
@@ -267,7 +290,7 @@ SYNC_BATCH_SIZE=50
 
 ---
 
-## 7. Следующие шаги
+## 9. Следующие шаги
 
 После получения всех ключей:
 

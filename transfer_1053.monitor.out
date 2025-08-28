@@ -1,0 +1,99 @@
+[heartbeat] Thu Aug 28 21:45:26 MSK 2025 transfer running (pid=28607)
+[heartbeat] Thu Aug 28 21:46:26 MSK 2025 transfer running (pid=28607)
+2025-08-28 21:45:33,468 - app.infrastructure.providers.spotify - INFO - Refreshing Spotify access token...
+2025-08-28 21:45:35,248 - app.infrastructure.providers.spotify - INFO - Spotify access token refreshed successfully
+2025-08-28 21:45:35,249 - app.infrastructure.providers.spotify - INFO - Token refreshed, operation can be retried
+2025-08-28 21:45:37,713 - app.infrastructure.providers.spotify - INFO - Found existing playlist: manual transfer
+2025-08-28 21:45:37,713 - app.application.pipeline - INFO - Matching 235 tracks...
+2025-08-28 21:45:44,876 - app.application.pipeline - INFO - Progress: 10/235 tracks (4.3%) processed in 7.2s. Matched: 10, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:45:53,333 - app.application.pipeline - INFO - Progress: 20/235 tracks (8.5%) processed in 15.6s. Matched: 20, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:03,534 - app.application.pipeline - INFO - Progress: 30/235 tracks (12.8%) processed in 25.8s. Matched: 30, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:13,290 - app.application.pipeline - INFO - Progress: 40/235 tracks (17.0%) processed in 35.6s. Matched: 40, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:20,628 - app.application.pipeline - INFO - Progress: 50/235 tracks (21.3%) processed in 42.9s. Matched: 50, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+[heartbeat] Thu Aug 28 21:47:26 MSK 2025 transfer running (pid=28607)
+2025-08-28 21:46:03,534 - app.application.pipeline - INFO - Progress: 30/235 tracks (12.8%) processed in 25.8s. Matched: 30, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:13,290 - app.application.pipeline - INFO - Progress: 40/235 tracks (17.0%) processed in 35.6s. Matched: 40, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:20,628 - app.application.pipeline - INFO - Progress: 50/235 tracks (21.3%) processed in 42.9s. Matched: 50, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:29,270 - app.application.pipeline - INFO - Progress: 60/235 tracks (25.5%) processed in 51.6s. Matched: 60, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:32,209 - app.infrastructure.providers.spotify - WARNING - No candidates found for track '' by 'Unknown'
+2025-08-28 21:46:36,542 - app.application.pipeline - INFO - Progress: 70/235 tracks (29.8%) processed in 58.8s. Matched: 69, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:47,101 - app.application.pipeline - INFO - Progress: 80/235 tracks (34.0%) processed in 69.4s. Matched: 79, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:00,163 - app.application.pipeline - INFO - Progress: 90/235 tracks (38.3%) processed in 82.4s. Matched: 89, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:13,969 - app.application.pipeline - INFO - Progress: 100/235 tracks (42.6%) processed in 96.3s. Matched: 99, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:25,447 - app.application.pipeline - INFO - Progress: 110/235 tracks (46.8%) processed in 107.7s. Matched: 109, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+[heartbeat] Thu Aug 28 21:48:26 MSK 2025 transfer running (pid=28607)
+2025-08-28 21:46:47,101 - app.application.pipeline - INFO - Progress: 80/235 tracks (34.0%) processed in 69.4s. Matched: 79, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:00,163 - app.application.pipeline - INFO - Progress: 90/235 tracks (38.3%) processed in 82.4s. Matched: 89, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:13,969 - app.application.pipeline - INFO - Progress: 100/235 tracks (42.6%) processed in 96.3s. Matched: 99, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:25,447 - app.application.pipeline - INFO - Progress: 110/235 tracks (46.8%) processed in 107.7s. Matched: 109, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:44,886 - app.application.pipeline - INFO - Progress: 120/235 tracks (51.1%) processed in 127.2s. Matched: 119, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:55,716 - app.application.pipeline - INFO - Progress: 130/235 tracks (55.3%) processed in 138.0s. Matched: 129, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:08,449 - app.application.pipeline - INFO - Progress: 140/235 tracks (59.6%) processed in 150.7s. Matched: 139, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:17,637 - app.application.pipeline - INFO - Progress: 150/235 tracks (63.8%) processed in 159.9s. Matched: 149, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:23,671 - app.infrastructure.providers.spotify - WARNING - No candidates found for track '' by 'Unknown'
+2025-08-28 21:48:24,218 - app.application.pipeline - INFO - Progress: 160/235 tracks (68.1%) processed in 166.5s. Matched: 158, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+[heartbeat] Thu Aug 28 21:49:26 MSK 2025 transfer running (pid=28607)
+2025-08-28 21:47:55,716 - app.application.pipeline - INFO - Progress: 130/235 tracks (55.3%) processed in 138.0s. Matched: 129, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:08,449 - app.application.pipeline - INFO - Progress: 140/235 tracks (59.6%) processed in 150.7s. Matched: 139, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:17,637 - app.application.pipeline - INFO - Progress: 150/235 tracks (63.8%) processed in 159.9s. Matched: 149, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:23,671 - app.infrastructure.providers.spotify - WARNING - No candidates found for track '' by 'Unknown'
+2025-08-28 21:48:24,218 - app.application.pipeline - INFO - Progress: 160/235 tracks (68.1%) processed in 166.5s. Matched: 158, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:35,269 - app.application.pipeline - INFO - Progress: 170/235 tracks (72.3%) processed in 177.6s. Matched: 168, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:44,948 - app.application.pipeline - INFO - Progress: 180/235 tracks (76.6%) processed in 187.2s. Matched: 178, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:53,050 - app.application.pipeline - INFO - Progress: 190/235 tracks (80.9%) processed in 195.3s. Matched: 188, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:06,881 - app.application.pipeline - INFO - Progress: 200/235 tracks (85.1%) processed in 209.2s. Matched: 198, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:16,961 - app.application.pipeline - INFO - Progress: 210/235 tracks (89.4%) processed in 219.2s. Matched: 208, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+[done] code=0
+/Users/eekudryavtsev/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2025-08-28 21:45:27,072 - app.interfaces.cli - INFO - Starting transfer (job: musync_20250828_214527)
+2025-08-28 21:45:29,253 - app.interfaces.cli - INFO - Found 1 playlists to transfer
+2025-08-28 21:45:29,253 - app.interfaces.cli - INFO - Transferring playlist: manual transfer (ID: 1053)
+2025-08-28 21:45:29,253 - app.application.pipeline - INFO - Starting playlist transfer: manual transfer (job: musync_20250828_214527)
+2025-08-28 21:45:29,254 - app.application.pipeline - INFO - Scanning source tracks...
+2025-08-28 21:45:33,467 - spotipy.client - ERROR - HTTP Error for GET to https://api.spotify.com/v1/me/ with Params: {} returned 401 due to The access token expired
+2025-08-28 21:45:33,468 - app.infrastructure.providers.spotify - WARNING - Spotify token expired during list_owned_playlists, attempting refresh...
+2025-08-28 21:45:33,468 - app.infrastructure.providers.spotify - INFO - Refreshing Spotify access token...
+2025-08-28 21:45:35,248 - app.infrastructure.providers.spotify - INFO - Spotify access token refreshed successfully
+2025-08-28 21:45:35,249 - app.infrastructure.providers.spotify - INFO - Token refreshed, operation can be retried
+2025-08-28 21:45:37,713 - app.infrastructure.providers.spotify - INFO - Found existing playlist: manual transfer
+2025-08-28 21:45:37,713 - app.application.pipeline - INFO - Matching 235 tracks...
+2025-08-28 21:45:44,876 - app.application.pipeline - INFO - Progress: 10/235 tracks (4.3%) processed in 7.2s. Matched: 10, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:45:53,333 - app.application.pipeline - INFO - Progress: 20/235 tracks (8.5%) processed in 15.6s. Matched: 20, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:03,534 - app.application.pipeline - INFO - Progress: 30/235 tracks (12.8%) processed in 25.8s. Matched: 30, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:13,290 - app.application.pipeline - INFO - Progress: 40/235 tracks (17.0%) processed in 35.6s. Matched: 40, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:20,628 - app.application.pipeline - INFO - Progress: 50/235 tracks (21.3%) processed in 42.9s. Matched: 50, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:29,270 - app.application.pipeline - INFO - Progress: 60/235 tracks (25.5%) processed in 51.6s. Matched: 60, Not found: 0, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:32,209 - app.infrastructure.providers.spotify - WARNING - No candidates found for track '' by 'Unknown'
+2025-08-28 21:46:36,542 - app.application.pipeline - INFO - Progress: 70/235 tracks (29.8%) processed in 58.8s. Matched: 69, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:46:47,101 - app.application.pipeline - INFO - Progress: 80/235 tracks (34.0%) processed in 69.4s. Matched: 79, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:00,163 - app.application.pipeline - INFO - Progress: 90/235 tracks (38.3%) processed in 82.4s. Matched: 89, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:13,969 - app.application.pipeline - INFO - Progress: 100/235 tracks (42.6%) processed in 96.3s. Matched: 99, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:25,447 - app.application.pipeline - INFO - Progress: 110/235 tracks (46.8%) processed in 107.7s. Matched: 109, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:44,886 - app.application.pipeline - INFO - Progress: 120/235 tracks (51.1%) processed in 127.2s. Matched: 119, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:47:55,716 - app.application.pipeline - INFO - Progress: 130/235 tracks (55.3%) processed in 138.0s. Matched: 129, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:08,449 - app.application.pipeline - INFO - Progress: 140/235 tracks (59.6%) processed in 150.7s. Matched: 139, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:17,637 - app.application.pipeline - INFO - Progress: 150/235 tracks (63.8%) processed in 159.9s. Matched: 149, Not found: 1, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:23,671 - app.infrastructure.providers.spotify - WARNING - No candidates found for track '' by 'Unknown'
+2025-08-28 21:48:24,218 - app.application.pipeline - INFO - Progress: 160/235 tracks (68.1%) processed in 166.5s. Matched: 158, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:35,269 - app.application.pipeline - INFO - Progress: 170/235 tracks (72.3%) processed in 177.6s. Matched: 168, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:44,948 - app.application.pipeline - INFO - Progress: 180/235 tracks (76.6%) processed in 187.2s. Matched: 178, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:48:53,050 - app.application.pipeline - INFO - Progress: 190/235 tracks (80.9%) processed in 195.3s. Matched: 188, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:06,881 - app.application.pipeline - INFO - Progress: 200/235 tracks (85.1%) processed in 209.2s. Matched: 198, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:16,961 - app.application.pipeline - INFO - Progress: 210/235 tracks (89.4%) processed in 219.2s. Matched: 208, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:30,544 - app.application.pipeline - INFO - Progress: 220/235 tracks (93.6%) processed in 232.8s. Matched: 218, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:43,053 - app.application.pipeline - INFO - Progress: 230/235 tracks (97.9%) processed in 245.3s. Matched: 228, Not found: 2, Timeouts: 0, Insufficient metadata: 0
+2025-08-28 21:49:49,393 - app.application.pipeline - INFO - Final matching summary: {'total_tracks': 235, 'processed_tracks': 235, 'matched_tracks': 233, 'not_found_tracks': 2, 'timeout_tracks': 0, 'insufficient_metadata_tracks': 0, 'match_rate_percent': 99.14893617021276, 'total_time_seconds': 251.68038082122803, 'tracks_per_second': 0.9337239527101784}
+2025-08-28 21:49:49,394 - app.application.pipeline - INFO - Adding 233 matched tracks to target playlist...
+2025-08-28 21:49:49,395 - app.application.pipeline - INFO - Processing batch 0, attempt 1
+2025-08-28 21:49:50,239 - app.application.pipeline - INFO - Batch 0 completed: added=100, duplicates=0, errors=0
+2025-08-28 21:49:50,240 - app.application.pipeline - INFO - Processing batch 1, attempt 1
+2025-08-28 21:49:51,201 - app.application.pipeline - INFO - Batch 1 completed: added=100, duplicates=0, errors=0
+2025-08-28 21:49:51,201 - app.application.pipeline - INFO - Processing batch 2, attempt 1
+2025-08-28 21:49:51,590 - app.application.pipeline - INFO - Batch 2 completed: added=33, duplicates=0, errors=0
+2025-08-28 21:49:51,591 - app.application.pipeline - INFO - Transfer completed: 233/235 tracks matched, 233 added, 0 duplicates, 0 failed
+2025-08-28 21:49:51,592 - app.interfaces.cli - INFO - Transfer completed: 233/235 tracks matched, 233 added
+2025-08-28 21:49:51,592 - app.interfaces.cli - INFO - Report saved to: reports/transfer_report_musync_20250828_214527.json
+2025-08-28 21:49:51,592 - app.interfaces.cli - INFO - All transfers completed (job: musync_20250828_214527)
+2025-08-28 21:49:51,593 - app.interfaces.cli - INFO - CLI execution time: 264.52s
+2025-08-28 21:49:51,593 - app.interfaces.cli - INFO - Cleaning up resources...

@@ -2,11 +2,30 @@
 
 ## Project Context (General)
 
-This repository will be used to build a new product. The rules below are stack-agnostic and focus on methodology, quality, and collaboration. Prefer asynchronous designs where appropriate, but do not assume a specific language or framework.
+This repository will be used to build MuSync - a music playlist transfer service between streaming platforms. The rules below are stack-agnostic and focus on methodology, quality, and collaboration. Prefer asynchronous designs where appropriate, but do not assume a specific language or framework.
+
+## MANDATORY: Read Rules First
+
+**BEFORE making any code changes, you MUST read and follow:**
+
+- `PROJECT_RULES.md` - Development methodology and rules (MUST READ FIRST before ANY development / НЕОБХОДИМО ОБЯЗАТЕЛЬНО перед ЛЮБОЙ разработкой)
+- `docs/PRD.md` - Product requirements and iterations
+- `ARCHITECTURE.md` - System architecture and layers
+- `BACKLOG.md` - Current iteration tasks and dependencies
+- `TEST_PLAN.md` - Testing strategy and acceptance criteria
+
+**These documents contain specific requirements, constraints, and workflows that MUST be followed.**
+
+### MuSync-Specific Requirements
+
+- **Hexagonal Architecture**: Clear separation of layers (Domain ← Application → Infrastructure)
+- **Idempotency**: Key `(userId, source, target, snapshotHash)` with checkpointing
+- **Rate Limiting**: Respect `retry-after`, exponential backoff, circuit breakers
+- **Structured Logging**: No secrets in logs, correlation by jobId
+- **Acceptance Criteria**: Match rate ≥90%, TTS ≤5min, 0 duplicates, ≥80% test coverage
 
 ## Code Standards
 
-- Prefer asynchronous/parallel execution where it improves user experience and performance
 - Use type annotations where supported by the language
 - Follow the community style guide for the chosen language and enforce formatting with a formatter/linter
 - Write comprehensive automated tests for every feature (unit, integration, and scenario tests)
@@ -70,13 +89,70 @@ This repository will be used to build a new product. The rules below are stack-a
 
 ## Development Workflow
 
-1. Write a concise feature description and acceptance criteria
-2. Identify shared code opportunities (mixins/components)
-3. Create/extend mixins for common functionality
-4. Write tests for the user scenario
-5. Implement the feature using the shared components
-6. Add integration/end-to-end tests
-7. Update documentation and examples
+**Before any development, read and follow `PROJECT_RULES.md` (9-step methodology).**
+
+**Key MuSync requirements:**
+
+- Hexagonal architecture with clear layer separation
+- Idempotent operations with checkpointing
+- Rate limiting and retry policies
+- Structured logging without secrets
+- Comprehensive test coverage (≥80%)
+
+## Document Navigator (Stage-based)
+
+- Stage 1–3 (Idea → Plan → Confirm):
+  - Точка входа: этот документ. Далее `PROJECT_RULES.md` (процесс 9 этапов, гейтинг).
+  - Затем `docs/PRD.md` §§ 1–4 (цели, метрики, сценарии/flows).
+  - Затем `ARCHITECTURE.md` §§ 2–4 (принципы, слои, порты).
+  - Optional: `BACKLOG.md` как референс‑разбивка. При расхождениях приоритет: `_cursorrules` → `PROJECT_RULES.md` → `docs/PRD.md` → `ARCHITECTURE.md`.
+
+- Stage 4–5 (Test planning → Confirm tests):
+  - `TEST_PLAN.md` (юнит/контракты/e2e, acceptance).
+  - Схемы: `docs/report_schema.json`, `docs/metrics_schema.json`, `docs/checkpoint_schema.json`.
+
+- Stage 6 (Development):
+  - `ARCHITECTURE.md` §§ 3–6, 7 (слои, порты, политики, потоки данных).
+  - Доменные порты/сущности: `app/domain/*`.
+  - Оркестрация/пайплайны: `app/application/*`.
+  - Кросс‑каттинги: `app/crosscutting/*` (config, logging, metrics, reporting).
+  - Scopes OAuth: `docs/PRD.md` § 6.3.
+  - Операционный флоу: `docs/FLOW_RUNBOOK.md`.
+
+- Stage 7 (Testing):
+  - `pytest.ini`, `scripts/run_tests_with_gating.py`, `app/tests/*`.
+
+- Stage 8 (Report & Metrics):
+  - Репортинг: `app/crosscutting/reporting.py`; артефакты в `reports/`.
+  - Метрики: `app/crosscutting/metrics.py`; соответствие схемам.
+
+- Stage 9 (Docs & Release):
+  - Обновить `README.md`, `CHANGELOG.md`, `docs/adr/*`, при необходимости `ARCHITECTURE.md`/`PRD.md`.
+  - PR‑чеклист: см. `PROJECT_RULES.md`.
+
+### E2E Flow quicklinks
+
+- Yandex liked → Spotify liked: `docs/PRD.md` § 4.1; также см. `ARCHITECTURE.md` § 7 (потоки данных).
+- Yandex playlist → Spotify playlist: `docs/PRD.md` § 4.3.
+- Идемпотентность/чекпойнты: `docs/PRD.md` §§ 2.12, 6.1; `ARCHITECTURE.md` § 6.1.
+ - Операционный ранбук: `docs/FLOW_RUNBOOK.md`.
+
+### Operational flags (execute policy)
+
+- Yellow:
+  - Match‑rate ниже цели (90%) на acceptance — продолжать, зафиксировать в отчёте; пересмотреть нормализацию/пороги.
+  - Повторяющиеся 429 — уважать `retry-after`, уменьшать размер батча временно.
+- Red (abort и сформировать error‑report):
+  - Ошибки OAuth/недостаточные scopes.
+  - >3 подряд 429 с `retry-after > 60s`.
+  - Сбой записи чекпойнта >3 попыток.
+  - Error‑rate записи >5% на последних 1000 операций.
+
+### Backlog policy
+
+- `BACKLOG.md` — опциональный референс для детальной разбивки задач и статусов.
+- При любых расхождениях приоритет документов: `_cursorrules` (этот навигатор) → `PROJECT_RULES.md` → `docs/PRD.md` → `ARCHITECTURE.md`.
+- Если `BACKLOG.md` перестаёт добавлять ценность, допускается его архивировать или объединить с Issue‑трекером.
 
 ## Mixin Implementation Guidelines
 
@@ -140,35 +216,7 @@ trait RepositoryCrudMixin<T> {
 }
 ```
 
-## Role-Based Repository Separation (Generic)
-
-Separate repositories (or data access methods) by roles/contexts to maintain clear boundaries and improve security:
-
-- Role A repositories (operators/internal tools)
-- Role B repositories (end users/customers)
-- Admin repositories (administrative/privileged operations)
-
-### Implementation Guidelines
-
-- Each role-specific repository extends or composes the base repository
-- Enforce role-based filtering and authorization at the repository boundary
-- Provide repositories via dependency injection based on context
-- Document role-specific methods and constraints
-- Maintain strict separation of concerns between roles
-
-### Security Principles
-
-- Never expose privileged methods to non-privileged contexts
-- Validate access at repository/service boundaries
-- Apply least-privilege defaults and audit sensitive operations
-
-### Documentation Structure
-
-- Create docs under `docs/repositories/`:
-  - `role_a_repositories.md`
-  - `role_b_repositories.md`
-  - `admin_repositories.md`
-  - `repository_access_control.md`
+<!-- Role-Based Repository Separation section removed to reduce noise for junior onboarding; can be reintroduced via ADR when needed. -->
 
 ## Success Criteria for Shared Code
 
@@ -178,3 +226,13 @@ Separate repositories (or data access methods) by roles/contexts to maintain cle
 - Ensure consistent behavior across similar features
 - Simplify maintenance and bug fixes
 - Keep patterns and usage well documented
+
+## MuSync-Specific Success Criteria
+
+- Match rate ≥ 90% on acceptance dataset
+- Zero duplicates on repeated runs (idempotency)
+- TTS ≤ 5 minutes for 10k tracks
+- Test coverage ≥ 80% for critical modules
+- All E2E tests pass acceptance criteria
+- Structured logs without secrets
+- Proper rate limiting and error handling

@@ -1,0 +1,134 @@
+{
+  "test_playlists": [
+    {
+      "id": "acceptance_playlist_1",
+      "name": "Classic Rock Hits",
+      "owner_id": "test_user",
+      "is_owned": true,
+      "tracks": [
+        {
+          "source_id": "track_1",
+          "title": "Bohemian Rhapsody",
+          "artists": ["Queen"],
+          "duration_ms": 354000,
+          "isrc": "GBUM71029601",
+          "expected_spotify_uri": "spotify:track:3z8h0TU7ReDPLIbEnYhWZb",
+          "expected_confidence": 0.98,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_2",
+          "title": "Hotel California",
+          "artists": ["Eagles"],
+          "duration_ms": 391000,
+          "isrc": "USEE19900001",
+          "expected_spotify_uri": "spotify:track:40riOy7x9W7udXy6SA5vLh",
+          "expected_confidence": 0.97,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_3",
+          "title": "Stairway to Heaven",
+          "artists": ["Led Zeppelin"],
+          "duration_ms": 482000,
+          "isrc": "GBALB7300001",
+          "expected_spotify_uri": "spotify:track:5CQ30WqJwcep0pYcV4AMNc",
+          "expected_confidence": 0.96,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_4",
+          "title": "Sweet Child O' Mine",
+          "artists": ["Guns N' Roses"],
+          "duration_ms": 356000,
+          "isrc": "USRC18800001",
+          "expected_spotify_uri": "spotify:track:7o2CTH4ctstm8TNelqjb51",
+          "expected_confidence": 0.95,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_5",
+          "title": "Smells Like Teen Spirit",
+          "artists": ["Nirvana"],
+          "duration_ms": 301000,
+          "isrc": "USRC19100001",
+          "expected_spotify_uri": "spotify:track:5ghIJDpPoe3CfHMGu71E6T",
+          "expected_confidence": 0.94,
+          "expected_reason": "exact_isrc"
+        }
+      ]
+    },
+    {
+      "id": "acceptance_playlist_2",
+      "name": "Pop Classics",
+      "owner_id": "test_user",
+      "is_owned": true,
+      "tracks": [
+        {
+          "source_id": "track_6",
+          "title": "Imagine",
+          "artists": ["John Lennon"],
+          "duration_ms": 183000,
+          "isrc": "GBALB7100001",
+          "expected_spotify_uri": "spotify:track:7pKfPomDEeI4TPT6EOYjn9",
+          "expected_confidence": 0.95,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_7",
+          "title": "Yesterday",
+          "artists": ["The Beatles"],
+          "duration_ms": 125000,
+          "isrc": "GBALB6500001",
+          "expected_spotify_uri": "spotify:track:3BQHpFgAp4l80e1XslIjNI",
+          "expected_confidence": 0.94,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_8",
+          "title": "Billie Jean",
+          "artists": ["Michael Jackson"],
+          "duration_ms": 294000,
+          "isrc": "USRC18200001",
+          "expected_spotify_uri": "spotify:track:5ChkMS8OtdzJeqyybCc9R5",
+          "expected_confidence": 0.93,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_9",
+          "title": "Like a Rolling Stone",
+          "artists": ["Bob Dylan"],
+          "duration_ms": 369000,
+          "isrc": "USRC16500001",
+          "expected_spotify_uri": "spotify:track:3AhXZa8sUQht0UEdBJgpGc",
+          "expected_confidence": 0.92,
+          "expected_reason": "exact_isrc"
+        },
+        {
+          "source_id": "track_10",
+          "title": "Respect",
+          "artists": ["Aretha Franklin"],
+          "duration_ms": 147000,
+          "isrc": "USRC16700001",
+          "expected_spotify_uri": "spotify:track:7s25THrKz86DM225ttOYjK",
+          "expected_confidence": 0.91,
+          "expected_reason": "exact_isrc"
+        }
+      ]
+    }
+  ],
+  "acceptance_criteria": {
+    "match_rate_threshold": 0.90,
+    "false_match_rate_threshold": 0.02,
+    "success_rate_threshold": 0.95,
+    "performance_threshold_seconds": 300,
+    "performance_threshold_tracks": 10000
+  },
+  "expected_metrics": {
+    "total_playlists": 2,
+    "total_tracks": 10,
+    "expected_match_rate": 1.0,
+    "expected_success_rate": 1.0,
+    "expected_false_match_rate": 0.0
+  }
+}
